@@ -1,5 +1,6 @@
 package com.example.study.controller;
 
+import com.example.study.model.SearchParam;
 import org.springframework.web.bind.annotation.*;
 
 @RestController // 컨트롤러로 사용한다는 지시자
@@ -17,5 +18,15 @@ public class GetController {
         System.out.println("pwd : " + pwd);
 
         return id+pwd;
+    }
+
+    // localhost:8080/api/multiParameter?account=abcd&email=study@gmail.com&page=10
+    @GetMapping("/getMultiParameter")
+    public SearchParam getMultiParameter(SearchParam searchParam) {
+        System.out.println(searchParam.getAccount());
+        System.out.println(searchParam.getEmail());
+        System.out.println(searchParam.getPage());
+
+        return searchParam;
     }
 }
