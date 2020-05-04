@@ -11,16 +11,17 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
-@ToString(exclude = {"orderGroup", "item"})
+@ToString(exclude = {"user", "orderDetailList"})
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Accessors(chain=true)
-public class OrderDetail {
+public class OrderGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +29,21 @@ public class OrderDetail {
 
     private String status;
 
-    private LocalDateTime arrivalDate;
+    private String orderType; // 주문의 형태 : 일괄 / 개별
 
-    private int quantity;
+    private String revAddress;
+
+    private String revName;
+
+    private String paymentType; // 카드 /  현금 결제
 
     private BigDecimal totalPrice;
+
+    private int totalQuantity;
+
+    private LocalDateTime orderAt;
+
+    private LocalDateTime arrivalDate;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -46,12 +57,11 @@ public class OrderDetail {
     @LastModifiedBy
     private String updatedBy;
 
-    // OrderDetail : Item = N : 1
+    //OrderGroup  : User = N : 1
     @ManyToOne
-    private Item item;
+    private User user; // mappedBy에 있는 변수명과 일치해야 함.
 
-    //OrderDetail N : 1 OrderGroup
-    @ManyToOne
-    private OrderGroup orderGroup;
-
+    //OrderGroup : OrderDetal = 1 : N
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderGroup")
+    private List<OrderDetail> orderDetailList;
 }
