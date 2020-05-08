@@ -11,12 +11,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@ToString(exclude = {"orderGroup", "item"})
+@ToString(exclude = {"orderGroupList", "item"})
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Accessors(chain=true)
@@ -51,7 +52,8 @@ public class OrderDetail {
     private Item item;
 
     //OrderDetail N : 1 OrderGroup
-    @ManyToOne
-    private OrderGroup orderGroup;
+//    @ManyToOne
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderDetail")
+    private List<OrderGroup> orderGroupList;
 
 }

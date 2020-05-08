@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity // == table
-@ToString(exclude = {"orderGroup"})
+@ToString(exclude = {"orderGroupList"})
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Accessors(chain=true)
