@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@ToString(exclude = {"orderGroupList", "item"})
+@ToString(exclude = {"orderGroup", "item"})
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Accessors(chain=true)
@@ -52,8 +52,7 @@ public class OrderDetail {
     private Item item;
 
     //OrderDetail N : 1 OrderGroup
-//    @ManyToOne
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderDetail")
-    private List<OrderGroup> orderGroupList;
+    @ManyToOne
+    private OrderGroup orderGroup;
 
 }

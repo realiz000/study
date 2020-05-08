@@ -43,7 +43,6 @@ public class OrderDetailApiService implements CrudInterface<OrderDetailApiReques
 
     @Override
     public Header<OrderDetailApiResponse> read(Long id) {
-        log.info("#######################################id:" + id);
         return orderDetailRepository.findById(id)
                 .map(orderDetail -> response(orderDetail))
                 .orElseGet(() -> Header.ERROR("데이터 없음."));
