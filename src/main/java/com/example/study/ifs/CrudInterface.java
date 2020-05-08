@@ -2,8 +2,7 @@ package com.example.study.ifs;
 
 import com.example.study.model.network.Header;
 
-public interface
-CrudInterface<Req, Res> {
+public interface CrudInterface<Req, Res> {
     
     Header<Res> create(Header<Req> request); // TODO : request object 추가
     

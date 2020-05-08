@@ -3,6 +3,7 @@ package com.example.study.model.network.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-@NotNull
+@NoArgsConstructor
 @Builder
 public class ItemApiResponse {
 
