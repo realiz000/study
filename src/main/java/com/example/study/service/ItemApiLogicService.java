@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemApiResponse> {
+public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResponse, Item> {
 
     @Autowired
     private PartnerRepository partnerRepository;
 
-    @Autowired
-    private ItemRepository itemRepository;
+//    @Autowired
+//    private ItemRepository itemRepository;
 
     @Override
     public Header<ItemApiResponse> create(Header<ItemApiRequest> request) {
@@ -37,14 +37,15 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
                 .partner(partnerRepository.getOne(body.getPartnerId()))
                 .build();
 
-        Item newItem = itemRepository.save(item);
+//        Item newItem = itemRepository.save(item);
+        Item newItem = baseRepository.save(item);
 
         return response(newItem);
     }
 
     @Override
     public Header<ItemApiResponse> read(Long id) {
-        return itemRepository.findById(id)
+        return baseRepository.findById(id)
                 .map(item -> response(item))
                 .orElseGet(()-> Header.ERROR("데이터 없음"));
     }
@@ -52,7 +53,7 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
     @Override
     public Header<ItemApiResponse> update(Header<ItemApiRequest> request) {
         ItemApiRequest body = request.getData();
-        return itemRepository.findById(body.getId())
+        return baseRepository.findById(body.getId())
                 .map(entityItem -> { // optional이니까 존재할 때 동작;
                     entityItem
                             .setStatus(body.getStatus())
@@ -66,16 +67,16 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
                             ;
                     return entityItem;
                 }) // 설명 : 37강 4분
-                .map(newEntityItem -> itemRepository.save(newEntityItem))
+                .map(newEntityItem -> baseRepository.save(newEntityItem))
                 .map(item->response(item))
                 .orElseGet(()->Header.ERROR("데이터 없음."));
     }
 
     @Override
     public Header delete(Long id) {
-        return itemRepository.findById(id)
+        return baseRepository.findById(id)
             .map(item -> {
-                itemRepository.delete(item);
+                baseRepository.delete(item);
                 return Header.OK();
             }) // map은 어떤 값을 받아서 무조건 리턴시켜줘야 함. 근데 delete는 void.
             .orElseGet(()->Header.ERROR("데이터 없음."));
@@ -83,6 +84,7 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
 
 
     public Header<ItemApiResponse> response(Item item) {
+
         ItemApiResponse body = ItemApiResponse.builder()
                 .id(item.getId())
                 .status(item.getStatus())
